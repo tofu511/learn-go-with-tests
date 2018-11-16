@@ -13,6 +13,7 @@ func Racer(a, b string) (winner string, err error) {
 }
 
 func ConfigurableRacer(a, b string, timeout time.Duration) (winner string, err error) {
+	// 複数のChannelを待つ場合にselectを使う
 	select {
 		case <- ping(a):
 			return a, nil
