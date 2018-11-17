@@ -6,16 +6,23 @@ import (
 )
 
 type InMemoryPlayerScore struct {
+	store map[string]int
+}
+
+func NewInMemoryPlayerStore() *InMemoryPlayerScore {
+	return &InMemoryPlayerScore{map[string]int{}}
 }
 
 func (i *InMemoryPlayerScore) GetPlayerScore(name string) int {
-	return 123
+	return i.store[name]
 }
 
-func (i *InMemoryPlayerScore) RecordWin(name string)  {}
+func (i *InMemoryPlayerScore) RecordWin(name string)  {
+	i.store[name]++
+}
 
 func RunServer()  {
-	server := &PlayerServer{&InMemoryPlayerScore{}}
+	server := &PlayerServer{NewInMemoryPlayerStore()}
 	if err := http.ListenAndServe(":5000", server); err != nil {
 		log.Fatalf("could not listen on port 5000 %v", err)
 	}
