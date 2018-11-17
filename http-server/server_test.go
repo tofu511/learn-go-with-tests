@@ -7,6 +7,15 @@ import (
 	"testing"
 )
 
+type StubPlayerStore struct {
+	scores map[string]int
+}
+
+func (s *StubPlayerStore) GetPlayerScore(name string) int {
+	score := s.scores[name]
+	return score
+}
+
 func TestGETPlayer(t *testing.T)  {
 	store := StubPlayerStore{
 		map[string]int{
