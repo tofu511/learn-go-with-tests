@@ -12,6 +12,8 @@ func (i *InMemoryPlayerScore) GetPlayerScore(name string) int {
 	return 123
 }
 
+func (i *InMemoryPlayerScore) RecordWin(name string)  {}
+
 func RunServer()  {
 	server := &PlayerServer{&InMemoryPlayerScore{}}
 	if err := http.ListenAndServe(":5000", server); err != nil {
