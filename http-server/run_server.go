@@ -21,6 +21,10 @@ func (i *InMemoryPlayerScore) RecordWin(name string)  {
 	i.store[name]++
 }
 
+func (i *InMemoryPlayerScore) GetLeague() []Player {
+	return nil
+}
+
 func RunServer()  {
 	server := NewPlayerServer(NewInMemoryPlayerStore())
 	if err := http.ListenAndServe(":5000", server); err != nil {
