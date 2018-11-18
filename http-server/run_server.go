@@ -22,7 +22,10 @@ func (i *InMemoryPlayerScore) RecordWin(name string)  {
 }
 
 func (i *InMemoryPlayerScore) GetLeague() []Player {
-	return nil
+	return []Player{
+		{"Chris", 33},
+		{"Nishikori", 40},
+	}
 }
 
 func RunServer()  {
