@@ -22,10 +22,12 @@ func (i *InMemoryPlayerScore) RecordWin(name string)  {
 }
 
 func (i *InMemoryPlayerScore) GetLeague() []Player {
-	return []Player{
-		{"Chris", 33},
-		{"Nishikori", 40},
+	var league []Player
+	for name, wins := range i.store {
+		league = append(league, Player{name, wins})
 	}
+
+	return league
 }
 
 func RunServer()  {
