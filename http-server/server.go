@@ -3,12 +3,17 @@ package http_server
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
 type Player struct {
 	Name string
 	Wins int
+}
+
+type FileSystemPlayerStore struct {
+	database io.Reader
 }
 
 type PlayerStore interface {
@@ -33,6 +38,12 @@ func NewPlayerServer(store PlayerStore) *PlayerServer {
 
 	p.Handler = router
 	return p
+}
+
+func (f *FileSystemPlayerStore) GetLeague() []Player {
+	var league []Player
+	json.NewDecoder(f.database).Decode(&league)
+	return league
 }
 
 func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request)  {
