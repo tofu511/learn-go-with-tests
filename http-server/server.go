@@ -13,7 +13,7 @@ type Player struct {
 }
 
 type FileSystemPlayerStore struct {
-	database io.ReadSeeker
+	database io.ReadWriteSeeker
 }
 
 type PlayerStore interface {
