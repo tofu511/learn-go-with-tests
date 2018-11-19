@@ -3,35 +3,21 @@ package http_server
 import (
 	"log"
 	"net/http"
+	"os"
 )
 
-type InMemoryPlayerScore struct {
-	store map[string]int
-}
-
-func NewInMemoryPlayerStore() *InMemoryPlayerScore {
-	return &InMemoryPlayerScore{map[string]int{}}
-}
-
-func (i *InMemoryPlayerScore) GetPlayerScore(name string) int {
-	return i.store[name]
-}
-
-func (i *InMemoryPlayerScore) RecordWin(name string)  {
-	i.store[name]++
-}
-
-func (i *InMemoryPlayerScore) GetLeague() []Player {
-	var league []Player
-	for name, wins := range i.store {
-		league = append(league, Player{name, wins})
-	}
-
-	return league
-}
+const dbFileName  =  "game.db.json"
 
 func RunServer()  {
-	server := NewPlayerServer(NewInMemoryPlayerStore())
+	db, err := os.OpenFile(dbFileName, os.O_RDWR|os.O_CREATE, 0666)
+
+	if err != nil {
+		log.Fatalf("problem opening %s %v", dbFileName, err)
+	}
+
+	store := &FileSystemPlayerStore{db}
+	server := NewPlayerServer(store)
+
 	if err := http.ListenAndServe(":5000", server); err != nil {
 		log.Fatalf("could not listen on port 5000 %v", err)
 	}
